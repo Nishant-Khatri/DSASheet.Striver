@@ -1,0 +1,40 @@
+class Solution {
+    public void rev(int[] arr)
+    {
+        int n=arr.length;
+
+        int i=0;
+        int j=n-1;
+        while(i<=j){
+            int temp=arr[i];
+            arr[i]=arr[j];
+            arr[j]=temp;
+            i++;
+            j--;
+        } 
+    }
+    public void nextPermutation(int[] nums) {
+        int i=0;
+        int ind=-1;
+        int val=0;
+        int n=nums.length;
+        int j=nums.length-1;
+       for(i=n-2;i>=0;i--)
+       {
+           if(nums[i+1]>nums[i])
+           {
+              ind=i;
+              val=nums[i];
+              break;
+           }
+       }
+       if(ind==-1) rev(nums) ;
+      else{ while(nums[j]<=nums[ind]) j--;
+
+       nums[ind]=nums[j];
+       nums[j]=val;
+       Arrays.sort(nums,i+1,n);
+      }
+
+    }
+}
