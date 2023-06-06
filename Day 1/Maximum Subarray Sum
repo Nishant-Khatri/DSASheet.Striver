@@ -1,0 +1,21 @@
+import java.util.* ;
+import java.io.*; 
+
+public class Solution {
+	
+	public static long maxSubarraySum(int[] arr, int n) {
+		long currsum=arr[0];
+		long ans=arr[0;
+		for(int i=1;i<n;i++)
+		{
+			if(arr[i]+currsum<arr[i])
+			{
+				currsum=arr[i];
+			}
+			else currsum+=arr[i];
+			ans=Math.max(currsum,ans);
+		}
+		return ans;
+	}
+
+}
