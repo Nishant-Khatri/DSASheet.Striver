@@ -1,0 +1,78 @@
+class Solution {
+    int cnt=0;
+    public void mergeSort(int [] arr,int l,int r)
+    {
+
+        if(l<r)
+        {
+            int mid=(r-l)/2+l;
+            mergeSort(arr,l,mid);
+            mergeSort(arr,mid+1,r);
+         calculate(arr,l,mid,r);
+            merge(arr,l,mid,r);
+        }
+
+    }
+    public void calculate(int [] arr,int left,int mid ,int right)
+    {
+        int i=left;
+        int j=mid+1;
+      
+        while(i<=mid )
+          {   //System.out.println(i+" "+j);
+          
+        while(j<=right && arr[i] >(long) 2*arr[j])
+        {
+           // System.out.println("Executed"+"Overflowed Value"+2*arr[j]);
+            // cnt++;
+            j++;
+        }
+        
+            cnt=cnt+(j-(mid+1));
+        //    System.out.println(mid+1+"  "+ j +"  " + i+" "+cnt);
+            i++;
+    }
+}
+    public void merge(int []arr,int left,int mid,int right)
+    {
+        int k=left;
+        int n1=mid-left+1;
+        int n2=right-mid;
+        int Left[]=new int[n1];
+        int Right[]=new int [n2];
+        for(int i=0;i<n1;i++)
+        {
+            Left[i]=arr[left+i];
+        }
+        for(int i=0;i<n2;i++)
+        {
+            Right[i]=arr[mid+1+i];
+        }
+        int i=0;
+        int j=0;
+        while(i<n1 && j<n2)
+        {
+            if(Left[i]>Right[j])
+            {
+                arr[k++]=Right[j++];
+            }
+            else
+            {
+                arr[k++]=Left[i++];
+            }
+        }
+        while(i<n1)
+        {
+            arr[k++]=Left[i++];
+        }
+        while(j<n2)
+        {
+            arr[k++]=Right[j++];
+        }
+    }
+    public int reversePairs(int[] nums) {
+        mergeSort(nums,0,nums.length-1);
+        //for(int i:nums) System.out.print(i+" ,");
+        return cnt;
+    }
+}
