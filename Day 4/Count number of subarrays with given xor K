@@ -1,0 +1,19 @@
+public class Solution {
+    public int solve(ArrayList<Integer> A, int B) {
+        HashMap<Integer,Integer> m=new HashMap<>();
+        int ans=0;
+        int xor=0;
+        m.put(0,1);
+        for(int i=0;i<A.size();i++)
+        {
+           
+            xor^=A.get(i);
+            if(m.containsKey(xor^B))
+            {
+                ans+=m.get(xor^B);
+            }
+m.put(xor,m.getOrDefault(xor,0)+1);            
+        }
+        return ans;
+        }
+}
