@@ -1,0 +1,30 @@
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> ans=new ArrayList<>();
+        List<Integer> dum=new ArrayList<Integer>();
+        decide(candidates, 0 , target ,  dum ,ans);
+        return ans;
+        
+    }
+    public void decide(int[] candi,int index,int target,List<Integer> a, List<List<Integer>> ans)
+    {
+       if(index==candi.length)
+       {
+           if(target==0) ans.add(new ArrayList<Integer>(a));
+           return;
+       }
+       if(target==0)
+       {
+           ans.add(new ArrayList<Integer>(a));
+           return ;
+       }
+       if(target>=candi[index])
+       {
+           a.add(candi[index]);
+           decide(candi,index,target-candi[index],a,ans);
+           a.remove(a.size()-1);
+       }
+       // not pick
+       decide(candi,index+1,target,a,ans);
+    }
+}
