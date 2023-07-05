@@ -1,0 +1,21 @@
+class Solution{
+    public void helper(ArrayList<Integer> arr,int sum,int ind, ArrayList<Integer> ans)
+    {
+        if(ind==arr.size())
+        {
+            ans.add(sum);
+            return ;
+        }
+        //select
+        helper(arr,sum+arr.get(ind), ind+1,ans);
+        //not select
+        helper(arr,sum,ind+1,ans);
+        
+    }
+    ArrayList<Integer> subsetSums(ArrayList<Integer> arr, int N){
+        ArrayList<Integer> ans=new ArrayList<>();
+        helper(arr,0,0,ans);
+        return ans;
+
+    }
+}
