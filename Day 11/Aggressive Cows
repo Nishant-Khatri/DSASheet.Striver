@@ -1,0 +1,30 @@
+class Solution {
+    public static boolean canWePlace(int[] stalls,int distance,int n,int k)
+    {
+        int l=0;
+        int cow=1;
+        
+        for(int i=1;i<n;i++)
+        {
+            if(stalls[i]-stalls[l]>=distance)
+            {
+                cow++;  l=i;
+                if(cow==k) return true;
+              
+            }
+        }
+        return false;
+    }
+    public static int solve(int n, int k, int[] stalls) {
+        Arrays.sort(stalls);
+        int high=stalls[n-1]-stalls[0];
+        int low=1;
+        while(high>=low)
+        {
+            int middist=((high-low)/2)+low;
+            if(canWePlace(stalls,middist,n,k))low=middist+1;
+            else high=middist-1;
+        }
+        return high;
+    }
+}
