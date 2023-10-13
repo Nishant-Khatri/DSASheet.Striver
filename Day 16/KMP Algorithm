@@ -1,0 +1,37 @@
+import java.util.ArrayList;
+import java.util.List;
+public class Solution {
+    public static int[] lpsUsingKmp(String str,int n){
+        int lps[]=new int[n];
+        int len=0,i=1;
+        while(i<n){
+            if(str.charAt(i)==str.charAt(len)){
+             len++;
+             lps[i]=len;
+             i++;
+            }
+            else{
+                if(len>0){
+                    len=lps[len-1];
+                }
+                else{
+                    lps[i]=0;
+                    i++;
+                }
+            }
+        }
+        return lps;
+    }
+    public static List< Integer > stringMatch(String text, String pattern) {
+        String conca=pattern+'#'+text;
+        List<Integer> ans=new ArrayList<>();
+        int [] lp=lpsUsingKmp(conca, conca.length());
+        for(int i=0;i<lp.length;i++){
+           // System.out.print(lp[i]+" ");
+            if(lp[i]==pattern.length()){
+                ans.add(i-2*(pattern.length())+1);
+            }
+        }
+     return ans;   
+    }
+}
