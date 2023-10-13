@@ -1,0 +1,37 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Solution {
+    public static int [] zfunction(String str) {
+    int n = str.length();
+    int zFuncArr[] = new int[n];
+    int left = 0, right = 0;    
+    for (int i = 1; i < n;i++) {
+      if (i <= right)
+      {
+        zFuncArr[i] = Math.min(zFuncArr[i-left], right - i + 1);
+      }
+
+      while ( zFuncArr[i] + i < n && str.charAt(zFuncArr[i]) == str.charAt(zFuncArr[i] + i) ) zFuncArr[i]++;
+
+      if (i + zFuncArr[i] - 1 > right)
+      {
+        left = i;
+        right = i + zFuncArr[i] - 1;
+      }
+    }
+    return zFuncArr;
+  }
+    public static List< Integer > search(String s, String pattern){
+         String cocat = pattern + '$' + s;
+        List<Integer> ans= new ArrayList<>();
+        int[] zFuncArray = zfunction(cocat);
+        for (int i = pattern.length(); i < zFuncArray.length; i++) {
+      if (zFuncArray[i] == pattern.length()) {
+        ans.add(i-pattern.length());
+      }
+      
+    }
+    return ans;
+    }
+}
