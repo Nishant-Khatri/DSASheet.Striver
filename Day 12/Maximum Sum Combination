@@ -1,0 +1,45 @@
+
+
+public class Solution {
+    public ArrayList<Integer> solve(ArrayList<Integer> A, ArrayList<Integer> B, int C) 
+    {   
+        int n=A.size();
+        int m=B.size();
+        
+        ArrayList<Integer> ans=new ArrayList<>();
+        Set <AbstractMap.SimpleEntry<Integer, Integer>> hs=new HashSet<>();
+        PriorityQueue<AbstractMap.SimpleEntry<Integer, AbstractMap.SimpleEntry<Integer, Integer>>> pqa = new PriorityQueue<>((x, y) -> Integer.compare(y.getKey(), x.getKey())); // Use reverse order comparator
+
+        
+        Collections.sort(A);
+        Collections.sort(B);        
+        
+        pqa.add(new AbstractMap.SimpleEntry<>(A.get(n-1)+B.get(m-1),new AbstractMap.SimpleEntry<>(n-1, m-1)));
+        hs.add(new AbstractMap.SimpleEntry<>(n-1, m-1));     
+
+        while(C-->0)
+        {
+        AbstractMap.SimpleEntry<Integer, AbstractMap.SimpleEntry<Integer,Integer>> pa=pqa.poll();
+            int sum=pa.getKey();
+            int x=pa.getValue().getKey();
+            int y=pa.getValue().getValue();
+            
+            ans.add(sum);
+            
+            
+            if(!hs.contains(new AbstractMap.SimpleEntry<>(x-1,y)))
+            {
+                pqa.add(new AbstractMap.SimpleEntry<>(A.get(x-1)+B.get(y),new AbstractMap.SimpleEntry<>(x-1,y)));
+                hs.add(new AbstractMap.SimpleEntry<>(x-1,y));
+            }
+            
+              if(!hs.contains(new AbstractMap.SimpleEntry<>(x,y-1)))
+            {
+                pqa.add(new AbstractMap.SimpleEntry<>(A.get(x)+B.get(y-1),new AbstractMap.SimpleEntry<>(x,y-1)));
+                hs.add(new AbstractMap.SimpleEntry<>(x,y-1));
+            }
+        }
+        return ans;
+
+    }
+}
