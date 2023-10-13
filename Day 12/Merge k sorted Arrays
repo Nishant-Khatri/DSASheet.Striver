@@ -1,0 +1,40 @@
+class Solution
+{
+   static class Triplet implements Comparable<Triplet>{
+        int val;
+        int arrpos;
+        int valpos;
+        Triplet(int val,int arrpos,int valpos)
+        {
+            this.val=val;
+            this.arrpos=arrpos;
+            this.valpos=valpos;
+        }
+        public int compareTo(Triplet trplt)
+        {
+            if(val < trplt.val) return -1;
+            else return 1;
+        } 
+    }
+    //Function to merge k sorted arrays.
+    public static ArrayList<Integer> mergeKArrays(int[][] arr,int K) 
+    {
+      ArrayList<Integer> ans=new ArrayList<>();
+      PriorityQueue<Triplet> pq=new PriorityQueue<>();
+      for(int i=0;i<arr.length;i++)
+      {
+          Triplet t=new Triplet(arr[i][0],i,0);
+          pq.add(t);
+      }
+      while(!pq.isEmpty())
+      {
+          Triplet data=pq.poll();
+          ans.add(data.val);
+          int apos=data.arrpos;
+          int vpos=data.valpos;
+          if(vpos+1<arr[apos].length)
+          pq.add(new Triplet(arr[apos][vpos+1],apos,vpos+1));
+                }
+        return ans;
+    }
+}
