@@ -1,1 +1,95 @@
 
+
+class Solution 
+{
+    //Function to find maximum of minimums of every window size.
+    static int[] maxOfMin(int[] arr, int n) 
+    {
+        Stack<Integer> st=new Stack<>();
+        int nextSmaller[]=new int[n];
+        int nextSmallerIndex=n-1;
+        for(int i=n-1;i>=0;i--)
+        {
+            if(!st.isEmpty()  && arr[st.peek()]<arr[i])
+            {
+                nextSmaller[nextSmallerIndex--]=st.peek();
+                st.push(i);
+            }
+            else 
+            { 
+                while(!st.isEmpty()&& arr[st.peek()]>=arr[i])
+                    {
+                        st.pop();
+                    }
+                if(st.isEmpty())
+                    {
+                         nextSmaller[nextSmallerIndex--]=n;
+                    }
+                else
+                    {
+                        nextSmaller[nextSmallerIndex--]=st.peek();
+                    }
+                st.push(i);
+            }
+      
+        }
+        
+        
+        Stack<Integer> st1=new Stack<>();
+        int prevSmaller[]=new int[n];
+        int prevSmallerIndex=0;
+        for(int i=0;i<n;i++){
+            if(!st1.isEmpty() && arr[st1.peek()]<arr[i])
+            {
+                prevSmaller[prevSmallerIndex++]=st1.peek();
+            }
+            else{
+                while(!st1.isEmpty()&& arr[st1.peek()]>=arr[i])
+                {
+                    st1.pop();
+                }
+                if(st1.isEmpty())
+                {
+                    prevSmaller[prevSmallerIndex++]=-1;
+                }
+                else
+                {
+                    prevSmaller[prevSmallerIndex++]=st1.peek();
+                }
+            }
+            st1.push(i);
+        }
+        
+        
+        
+        // Maximum window size till which each elemnent can influence to be the minimum
+        int mws[]=new int[n];
+        int mwsIndex=0;
+        for(int i=0;i<n;i++)
+        {
+            mws[i]=nextSmaller[i]-prevSmaller[i]-2;    
+        }
+        
+        // for(int i:nextSmaller)
+        // System.out.print(i+" ");
+        // System.out.println();
+        
+        // for(int i:prevSmaller)
+        // System.out.print(i+" ");
+        // System.out.println();
+        
+        // for(int i:mws)
+        // System.out.print(i+" ");
+        // System.out.println();
+        
+        int ans[]=new int[n];
+        for(int i =0;i<n;i++){
+            ans[mws[i]]=Math.max(arr[i],ans[mws[i]]);
+        }
+        for(int i=n-2;i>=0;i--){
+            ans[i]=Math.max(ans[i],ans[i+1]);
+        }
+    
+                return ans;
+    }
+}
