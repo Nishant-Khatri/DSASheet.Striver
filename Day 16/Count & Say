@@ -1,0 +1,29 @@
+class Solution {
+    public String countAndSay(int n) {
+        if(n==1) return "1";
+       if(n==2) return "11";
+
+        StringBuilder sb=new StringBuilder();
+        sb.append("11");
+        int c=1;
+        for(int i=3;i<=n;i++){
+            String s="";
+            sb.append("$");
+            for(int j=0;j<sb.length()-1;j++){
+                
+                if(sb.charAt(j)!=sb.charAt(j+1))
+                {
+                    s+=Integer.toString(c);
+                    c=1;
+                    s+=sb.charAt(j);
+                }
+                else c++;
+            }
+            // System.out.println(s);
+            sb.setLength(0);
+            sb.append(s);
+        }
+return sb.toString();
+        
+    }
+}
