@@ -1,0 +1,115 @@
+class Node{
+    Node next;
+    Node prev;
+    int key,fre,val;
+    Node(){}
+    Node(int key,int val){
+        this.key=key;
+        this.fre=1;
+        this.val=val;
+    }
+}
+class DoubleLinkedList{
+    Node head;
+    Node tail;
+    int len;
+    DoubleLinkedList()
+    {
+        this.len=0;
+        head=new Node();
+        tail=new Node();
+        head.next=tail;
+        tail.prev=head;
+    }
+    public void insert(Node temp)
+    {
+        head.next.prev=temp;
+        temp.next=head.next;
+        temp.prev=head;
+        head.next=temp;
+        len++;
+
+    }
+    public void remove(Node temp)
+    {
+        Node p=temp.prev;
+        Node q=temp.next;
+        p.next=q;
+        q.prev=p;
+        temp.prev=null;
+        len--;
+        temp.next=null;
+    }
+}
+
+class LFUCache {
+
+    Map<Integer,DoubleLinkedList> freq;
+    Map<Integer,Node> hm;
+    int size,leastfreq,currsize;
+
+    public LFUCache(int capacity) {
+        freq=new HashMap<>();
+        currsize=0;
+         hm=new HashMap<>();
+        size=capacity;
+        leastfreq=0;
+    }
+    
+    public int get(int key) {
+        if(!hm.containsKey(key))
+         return -1;
+        update(hm.get(key));
+        return hm.get(key).val; 
+    }
+    
+    public void put(int key, int value) {
+        if(hm.containsKey(key))
+        {
+            Node temp=hm.get(key);
+            temp.val=value;
+            update(temp);
+        }
+        else
+        {   
+            currsize++;
+            if(currsize>size)
+            {
+                DoubleLinkedList minfreqlist=freq.get(leastfreq);
+             //   System.out.println("removing while updating"+ minfreqlist.tail.prev.val);
+                
+                hm.remove(minfreqlist.tail.prev.key);
+                minfreqlist.remove(minfreqlist.tail.prev);
+                currsize--;
+            }
+            leastfreq=1;
+            Node temp=new Node(key,value);
+            DoubleLinkedList cl=freq.getOrDefault(1,new DoubleLinkedList());
+            cl.insert(temp);
+            freq.put(1,cl);
+            hm.put(key,temp);
+        }
+        
+    }
+    public void update(Node temp)
+    {
+        int cf=temp.fre;
+        DoubleLinkedList cl=freq.get(cf);
+        cl.remove(temp);
+
+        if(cf==leastfreq && cl.len==0){leastfreq++;}
+
+        temp.fre++;
+        DoubleLinkedList nl=freq.getOrDefault(temp.fre,new DoubleLinkedList());
+        nl.insert(temp);
+        freq.put(temp.fre,nl);
+    }
+
+}
+
+/**
+ * Your LFUCache object will be instantiated and called as such:
+ * LFUCache obj = new LFUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
