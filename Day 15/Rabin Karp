@@ -1,0 +1,56 @@
+class Solution {
+    public int repeatedStringMatch(String a, String b) {
+        String str="";
+        int cnt=0;
+        while(str.length()<b.length()){
+            str+=a;
+            cnt++;
+        }
+       // System.out.println(str);
+        if(rabinKarpMatch(b,str)) return cnt;
+        else if(rabinKarpMatch(b,str+a))return cnt+1;
+        else return -1;
+
+
+    }
+    public boolean rabinKarpMatch(String pat,String target){
+        int n=target.length();
+        int m=pat.length();
+        if(m==n) return pat.equals(target);
+       // System.out.println(m+" "+n);
+        double patternhash=0;
+        double targethash=0;
+        for(int i=0;i<m;i++){
+            int p=pat.charAt(i)-'a';
+            int t=target.charAt(i)-'a';
+            patternhash=(patternhash+(p*(Math.pow(26,m-i-1))));
+            targethash=(targethash+(t*(Math.pow(26,m-i-1))));
+        }
+            for(int j=m;j<n;j++)
+            {
+                 //System.out.println("Executed "+patternhash+" "+targethash);
+                    if(patternhash==targethash){
+                 
+                    if(pat.equals(target.substring(j-m,j))){
+                    
+                    return true;}
+                }
+              
+                else{
+                    int t=target.charAt(j-m)-'a';
+                    targethash=(targethash-(t*Math.pow(26,m-1)));
+                   // System.out.println("subtaract "+ targethash);
+                    targethash=(targethash*26);
+                    //  System.out.println("multiply "+ targethash);
+                    targethash=(targethash+(target.charAt(j)-'a'));
+                     // System.out.println("add "+ targethash);                    
+                }
+            }
+        if(patternhash==targethash){
+                    if(pat.equals(target.substring(n-m,n)))
+                    return true;
+                }
+        
+        return false;
+    }
+}
