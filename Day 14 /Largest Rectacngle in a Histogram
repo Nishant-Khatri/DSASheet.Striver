@@ -1,0 +1,60 @@
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+            int l=0;
+        ArrayList<Integer> leftSmaller=new ArrayList<>();
+        Stack<Integer> s1=new Stack<>();
+
+      
+        for(int j=0;j<heights.length;j++)
+        {
+            if(!s1.isEmpty() && heights[s1.peek()]<heights[j]){
+                leftSmaller.add(s1.peek()+1);
+                s1.push(j);
+            }
+            else{
+                            
+                    while(!s1.isEmpty() && heights[s1.peek()]>=heights[j]) { s1.pop();}
+                    if(s1.size()==0)
+                   leftSmaller.add(0);
+                    else
+                   leftSmaller.add(s1.peek()+1);
+                    s1.push(j);
+              }
+          
+        }
+        System.out.println(leftSmaller+" "+s1);
+       int [] rightSmaller=new int[heights.length];
+        Stack<Integer> s2=new Stack<>();
+
+        for(int j=heights.length-1;j>=0;j--)
+        {
+            if(!s2.isEmpty() && heights[s2.peek()]<heights[j]){
+                rightSmaller[j]=s2.peek()-1;
+                s2.push(j);
+            }
+            else{
+                            
+                    while(!s2.isEmpty() && heights[s2.peek()]>=heights[j]) { s2.pop();}
+                    if(s2.size()==0)
+                   rightSmaller[j]=heights.length-1;
+                    else
+                   rightSmaller[j]=s2.peek()-1;
+                    s2.push(j);
+              }
+          
+        }
+        int area;
+        int ans=0;
+        for(int i=0;i<heights.length;i++)
+
+        {
+            
+            area=heights[i]*(rightSmaller[i]-leftSmaller.get(i)+1);
+
+        //    System.out.println(" right "+rightSmaller[i]+" left "+leftSmaller.get(i)+" area "+area);
+            ans=Math.max(ans,area);
+        }
+        return ans;
+        
+    }
+}
