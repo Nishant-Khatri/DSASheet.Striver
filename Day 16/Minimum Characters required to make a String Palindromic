@@ -1,0 +1,40 @@
+public class Solution {
+    public String rev(String A){
+        String rev="";
+        for(char ch: A.toCharArray()){
+            rev=ch+rev;
+        }
+        return rev;
+    }
+    public int [] lpsUsingKMP(String str,int n){
+        int len=0,i=1;
+        int lps[]=new int[n];
+        while(i<n){
+            if(str.charAt(i)==str.charAt(len)){
+                len++;
+                lps[i]=len;
+                i++;
+            }
+            else{
+                if(len>0){
+                    len=lps[len-1];
+                }
+                else{
+                    lps[i]=0;
+                    i++;
+                }
+            }
+        }
+        return lps;
+    }
+    public int solve(String A) {
+        StringBuilder s=new StringBuilder();
+        s.append(A);
+        String rev=s.reverse().toString();
+        s.reverse().append("$").append(rev);
+        String temp=s.toString();
+        int [] lp=lpsUsingKMP(temp,temp.length());
+        int ans=A.length()-lp[temp.length()-1];
+        return ans;
+    }
+}
